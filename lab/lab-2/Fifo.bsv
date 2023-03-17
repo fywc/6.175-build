@@ -13,7 +13,57 @@ endinterface
 
 // Exercise 1
 module mkFifo(Fifo#(3,t)) provisos (Bits#(t,tSz));
-   // define your own 3-elements fifo here.     
+    // define your own 3-elements fifo here.     
+    Reg#(t)    da <- mkRegU();
+    Reg#(Bool) va <- mkReg(False);
+    Reg#(t)    db <- mkRegU();
+    Reg#(Bool) vb <- mkReg(False);
+    Reg#(t)    dc <- mkRegU();
+    Reg#(Bool) vc <- mkReg(False);
+
+    method Action enq(t x) if (!vc || !vb);
+        if (!va) begin
+            da <= x;
+            va <= True;
+        end
+        else if (!vb) begin
+            db <= x;
+            vb <= True;
+        end
+        else begin
+            dc <= x;
+            vc <= True;
+        end
+    endmethod
+
+    method Action deq if (va);
+        if (vb && vc) begin
+            da <= db;
+            db <= dc;
+            vc <= False;
+        end
+        else if (vb && !vc) begin
+            da <= db;
+            vb <= False;
+        end
+        else begin
+            va <= False;
+        end
+    endmethod
+
+    method t first if (va);
+        return da;
+    endmethod
+
+    method Bool notEmpty;
+        if (va) begin
+            return True;
+        end
+        else begin
+            return False;
+        end
+    endmethod
+
 
 endmodule
 
