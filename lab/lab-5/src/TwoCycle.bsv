@@ -61,7 +61,7 @@ module mkProc(Proc);
             eInst.data <- dMem.req(MemReq{ op: Ld, addr: eInst.addr, data: ?});
         end
         else if (eInst.iType == St) begin
-            let d <- dMem.req(MemReq{ op: St, addr: eInst.addr, data: eInst.data});
+            let dummy <- dMem.req(MemReq{ op: St, addr: eInst.addr, data: eInst.data});
         end
 
         if (isValid(eInst.dst)) begin
