@@ -51,16 +51,16 @@ module mkProc(Proc);
     rule doExecute if (csrf.started);
         let x = f2e.first;
         let dInst = x.dInst;
-        let pc    = x.pc;
-        let ppc = pc + 4;
+        let x_pc    = x.pc;
+        let ppc = x_pc + 4;
 
         let rVal1 = rf.rd1(fromMaybe(?, dInst.src1));
         let rVal2 = rf.rd2(fromMaybe(?, dInst.src2));
         let csrVal = csrf.rd(fromMaybe(?, dInst.csr));
-        let eInst = exec(dInst, rVal1, rVal2, pc, ppc, csrVal);
+        let eInst = exec(dInst, rVal1, rVal2, x_pc, ppc, csrVal);
 
         if (eInst.iType == Unsupported) begin
-            $fwrite(stderr, "EROOR: Executing unsupported instruction at pc: %x. Exiting!\n", pc);
+            $fwrite(stderr, "EROOR: Executing unsupported instruction at pc: %x. Exiting!\n", x_pc);
             $finish;
         end
 
@@ -74,13 +74,14 @@ module mkProc(Proc);
         if (isValid(eInst.dst)) begin
             rf.wr(fromMaybe(?, eInst.dst), eInst.data);
         end
-        
+
         if (eInst.mispredict) begin
             pc <= eInst.addr;
             f2e.clear;
         end
-
-        f2e.deq;
+	    else begin
+	        f2e.deq;
+	    end
 
         csrf.wr(eInst.iType == Csrw ? eInst.csr : Invalid, eInst.data);
     endrule
