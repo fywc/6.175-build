@@ -15,8 +15,11 @@ import TwoStageBTB::*;
 `ifdef FOURCYCLE
 import FourCycle::*;
 `endif
-`ifdef SixStage
+`ifdef SIXSTAGE
 import SixStage::*;
+`endif
+`ifdef SIXSTAGEBHT 
+import SixStageBHT::*;
 `endif
 
 import Ifc::*;

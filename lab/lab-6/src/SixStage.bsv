@@ -57,7 +57,7 @@ typedef struct {
     Addr pred_pc;
 } ExRedirect deriving (Bits, Eq);
 
-(*synthesize*)
+(* synthesize *)
 module mkProc(Proc);
     Reg#(Addr) pc <- mkRegU;
     RFile      rf <- mkRFile;
@@ -122,7 +122,7 @@ module mkProc(Proc);
             $display("do RegisterFetch at pc: %x", x.pc);
         end
         else begin
-            $display("Stalled ar pc: %x", x.pc);
+            $display("Stalled at pc: %x", x.pc);
         end
     endrule
         
