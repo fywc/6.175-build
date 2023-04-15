@@ -21,6 +21,9 @@ import SixStage::*;
 `ifdef SIXSTAGEBHT 
 import SixStageBHT::*;
 `endif
+`ifdef SIXSTAGEBONUS
+import SixStageBonus::*;
+`endif
 
 import Ifc::*;
 import ProcTypes::*;
